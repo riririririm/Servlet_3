@@ -8,10 +8,9 @@ import com.rim.util.DBConnector;
 
 public class UploadDAO {
 
-	public int insert(UploadDTO uploadDTO) throws Exception {
+	public int insert(UploadDTO uploadDTO, Connection conn) throws Exception {
 		int result =0;
 		
-		Connection conn = DBConnector.getConnection();
 		String sql = "insert into upload values(notice_seq.nextval, ?,?,?)";
 		PreparedStatement pst = conn.prepareStatement(sql);
 		pst.setInt(1, uploadDTO.getNum());
@@ -20,7 +19,8 @@ public class UploadDAO {
 		
 		result = pst.executeUpdate();
 		
-		DBConnector.disConnect(pst, conn);
+		pst.close();
+		
 		return result;
 	}
 	

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -149,18 +150,45 @@ public class NoticeService implements Action{
 			noticeDTO.setContents(multi.getParameter("contents"));
 			
 			int result=0;
+			Connection conn =null; 
 			try {
+				conn=DBConnector.getConnection();
+				
+				//auto commit 해제
+				conn.setAutoCommit(false);
+				
 				int num= noticeDAO.getNum();
 				noticeDTO.setNum(num);
 				
-				result =noticeDAO.insert(noticeDTO);
+				result =noticeDAO.insert(noticeDTO, conn);
 				
 				uploadDTO.setNum(num);
-				result= uploadDAO.insert(uploadDTO);
+				result= uploadDAO.insert(uploadDTO,conn);
+				if(result<1) {
+					throw new Exception();
+				}
+				conn.commit();
 				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
+				try {
+					result=0;
+					conn.rollback();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				e.printStackTrace();
+			}finally {
+				//예외 발생하든 안하든 실행
+				try {
+					conn.setAutoCommit(true);
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 			}
 			
 			if(result>0) {
