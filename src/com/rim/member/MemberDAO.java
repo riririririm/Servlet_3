@@ -26,10 +26,9 @@ public class MemberDAO {
 		return result;
 	}
 
-	public MemberDTO memberLogin(MemberDTO dto) throws Exception{
+	public MemberDTO memberLogin(MemberDTO dto, Connection conn) throws Exception{
 		MemberDTO m = null;
 		
-		Connection conn  = DBConnector.getConnection();
 		String sql="select * from member where id=? and pw=?";
 		PreparedStatement pst = conn.prepareStatement(sql);
 		pst.setString(1, dto.getId());
@@ -46,14 +45,12 @@ public class MemberDAO {
 			m.setAge(rs.getInt("age"));
 		}
 		
-		DBConnector.disConnect(pst, conn);
-		
 		return m;
 	}
 	
-	public int memberJoin(MemberDTO dto) throws Exception{
+	public int memberJoin(MemberDTO dto, Connection conn) throws Exception{
 		int result=0;
-		Connection conn  = DBConnector.getConnection();
+
 		String sql="insert into member values(?,?,?,?,?,?)";
 		PreparedStatement pst = conn.prepareStatement(sql);
 		pst.setString(1, dto.getId());
@@ -65,14 +62,11 @@ public class MemberDAO {
 		
 		result = pst.executeUpdate();
 		
-		DBConnector.disConnect(pst, conn);
-		
 		return result;
 	}
 	
-	public int memberUpdate(MemberDTO dto) throws Exception{
+	public int memberUpdate(MemberDTO dto, Connection conn) throws Exception{
 		int result=0;
-		Connection conn  = DBConnector.getConnection();
 		String sql="update member set name=?, pw=?, phone=?, email=?, age=? where id=?";
 		PreparedStatement pst = conn.prepareStatement(sql);
 		pst.setString(6, dto.getId());
@@ -84,21 +78,19 @@ public class MemberDAO {
 		
 		result = pst.executeUpdate();
 		
-		DBConnector.disConnect(pst, conn);
-		
 		return result;
 	}
 	
-	public int memberDelete(String id) throws Exception{
+	public int memberDelete(String id, Connection conn) throws Exception{
 		int result=0;
-		Connection conn  = DBConnector.getConnection();
+		
 		String sql="delete member where id=?";
 		PreparedStatement pst = conn.prepareStatement(sql);
 		pst.setString(1, id);
 	
 		result = pst.executeUpdate();
 		
-		DBConnector.disConnect(pst, conn);
+		
 		
 		return result;
 	}

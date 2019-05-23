@@ -200,7 +200,7 @@ public class NoticeService implements Action{
 				check=true;
 				path="../WEB-INF/views/common/result.jsp";
 			}
-		}
+		}//post
 		
 		actionForward.setCheck(check);
 		actionForward.setPath(path);

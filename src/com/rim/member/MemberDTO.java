@@ -1,5 +1,7 @@
 package com.rim.member;
 
+import com.rim.upload.UploadDTO;
+
 public class MemberDTO {
 	private String id;
 	private String pw;
@@ -7,6 +9,15 @@ public class MemberDTO {
 	private String phone;
 	private String email;
 	private int age;
+	private UploadDTO uploadDTO;
+	
+	
+	public UploadDTO getUploadDTO() {
+		return uploadDTO;
+	}
+	public void setUploadDTO(UploadDTO uploadDTO) {
+		this.uploadDTO = uploadDTO;
+	}
 	public String getId() {
 		return id;
 	}
