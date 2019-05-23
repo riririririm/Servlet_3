@@ -2,6 +2,8 @@ package com.rim.notice;
 
 import java.sql.Date;
 
+import com.rim.upload.UploadDTO;
+
 public class NoticeDTO {
 	private int num;
 	private String title;
@@ -9,6 +11,15 @@ public class NoticeDTO {
 	private String writer;
 	private Date reg_date;
 	private int hit;
+	private UploadDTO uploadDTO;
+	
+	
+	public UploadDTO getUploadDTO() {
+		return uploadDTO;
+	}
+	public void setUploadDTO(UploadDTO uploadDTO) {
+		this.uploadDTO = uploadDTO;
+	}
 	public int getNum() {
 		return num;
 	}

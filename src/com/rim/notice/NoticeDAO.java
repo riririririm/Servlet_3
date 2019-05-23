@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import com.rim.page.SearchRow;
+import com.rim.upload.UploadDTO;
 import com.rim.util.DBConnector;
 
 public class NoticeDAO {
@@ -45,7 +46,8 @@ public class NoticeDAO {
 		public NoticeDTO selectOne(int num) throws Exception {
 			NoticeDTO dto = null;
 			Connection conn = DBConnector.getConnection();
-			String sql="select * from notice where num=?";
+			String sql="select N.*, U.* from notice N full outer join"
+					+ "upload U on N.num=U.num where N.num=?";
 			
 			PreparedStatement pst = conn.prepareStatement(sql);
 			pst.setInt(1, num);
@@ -59,6 +61,14 @@ public class NoticeDAO {
 				dto.setNum(rs.getInt("num"));
 				dto.setTitle(rs.getString("title"));
 				dto.setWriter(rs.getString("writer"));
+				
+				UploadDTO uploadDTO = new UploadDTO();
+				uploadDTO.setPnum(rs.getInt("pnum"));
+				uploadDTO.setOname(rs.getString("oname"));
+				uploadDTO.setFname(rs.getString("fname"));
+				dto.setUploadDTO(uploadDTO);
+				//dto.setUploadDTO(new UploadDTO());
+				//dto.getUploadDTO().setPnum(rs.getInt("pnum"));
 			}
 			DBConnector.disConnect(rs, pst, conn);
 			return dto;
