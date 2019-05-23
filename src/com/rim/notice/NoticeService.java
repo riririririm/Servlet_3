@@ -16,13 +16,17 @@ import com.rim.action.ActionForward;
 import com.rim.page.SearchMakePage;
 import com.rim.page.SearchPager;
 import com.rim.page.SearchRow;
+import com.rim.upload.UploadDAO;
+import com.rim.upload.UploadDTO;
 import com.rim.util.DBConnector;
 
 public class NoticeService implements Action{
 	private NoticeDAO noticeDAO;
+	private UploadDAO uploadDAO;
 	
 	public NoticeService() {
 		noticeDAO = new NoticeDAO();
+		uploadDAO = new UploadDAO();
 	}
 
 	@Override
@@ -76,9 +80,11 @@ public class NoticeService implements Action{
 		//글이 있으면 출력
 		//없는 글이면 메세지 출력 - 삭제되었거나 없는 글입니다 -> list페이지로
 		NoticeDTO noticeDTO = null;
+		UploadDTO uploadDTO = null;
 		try {
 			 int num = Integer.parseInt(request.getParameter("num")); 
 			 noticeDTO = noticeDAO.selectOne(num);
+			 uploadDTO = uploadDAO.selectOne(num);
 		}catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -86,6 +92,7 @@ public class NoticeService implements Action{
 		String path="";
 		if(noticeDTO!=null) {
 			request.setAttribute("dto", noticeDTO);
+			request.setAttribute("upload", uploadDTO);
 			path="../WEB-INF/views/notice/noticeSelect.jsp";
 		}else {
 			request.setAttribute("message", "No Data");
@@ -132,18 +139,25 @@ public class NoticeService implements Action{
 			String fileName = multi.getFilesystemName("f1");//파일의 파라미터 이름
 			//클라이언트가 저장한 이름
 			String oName = multi.getOriginalFileName("f1");//파일의 파라미터 이름
-			System.out.println("filename: "+fileName);
-			System.out.println("O filename: "+oName);
 			
+			UploadDTO uploadDTO = new UploadDTO();
+			uploadDTO.setFname(fileName);
+			uploadDTO.setOname(oName);
+						
+			noticeDTO.setTitle(multi.getParameter("title"));
+			noticeDTO.setWriter(multi.getParameter("writer"));
+			noticeDTO.setContents(multi.getParameter("contents"));
 			
-			noticeDTO.setTitle(request.getParameter("title"));
-			noticeDTO.setWriter(request.getParameter("writer"));
-			noticeDTO.setContents(request.getParameter("contents"));
-			String f1=request.getParameter("f1");
-			System.out.println(f1);
 			int result=0;
 			try {
+				int num= noticeDAO.getNum();
+				noticeDTO.setNum(num);
+				
 				result =noticeDAO.insert(noticeDTO);
+				
+				uploadDTO.setNum(num);
+				result= uploadDAO.insert(uploadDTO);
+				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

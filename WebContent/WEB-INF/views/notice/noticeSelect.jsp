@@ -18,6 +18,7 @@
 		<h3>Writer : ${dto.writer}</h3>
 		<h3>Param    : ${param.num ge dto.num}</h3>
 		<h3>Writer : ${dto.writer ne 'test'}</h3>
+		<h3>Upload : <a href="../upload/${upload.fname}">${upload.oname}</a></h3>
 	</div>
 	
 	<a href="./noticeUpdate?num=${dto.num}">Update</a>
