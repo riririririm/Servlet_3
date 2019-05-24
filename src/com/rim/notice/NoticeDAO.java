@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-
 import com.rim.page.SearchRow;
 import com.rim.upload.UploadDTO;
 import com.rim.util.DBConnector;

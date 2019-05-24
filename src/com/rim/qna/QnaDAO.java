@@ -55,7 +55,7 @@ public class QnaDAO {
 				+ "where R between ? and ?";
 		
 		PreparedStatement pst = conn.prepareStatement(sql);
-		pst.setString(1, "%"+searchRow.getStartRow()+"%");
+		pst.setString(1, "%"+searchRow.getSearch().getSearch()+"%");
 		pst.setInt(2, searchRow.getStartRow());
 		pst.setInt(3, searchRow.getLastRow());
 		

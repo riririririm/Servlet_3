@@ -53,7 +53,8 @@ public class QnaService implements Action {
 		//page
 		int totalCount =0;
 		try {
-			
+			System.out.println(searchRow.getStartRow());
+			System.out.println(searchRow.getLastRow());
 			totalCount= qnaDao.countTotal(searchRow);
 			ArrayList<QnaDTO> ar = qnaDao.list(searchRow);
 			request.setAttribute("list", ar);

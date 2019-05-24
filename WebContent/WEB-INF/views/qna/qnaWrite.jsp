@@ -13,7 +13,7 @@
 		var d1=0;
 		$("#add").click(function() {
 			if(count<5){
-				$("#addFile").append('<div id="'+d1+'"><input type="file" class="form-control" id="" name="f1"><span title="'+d1+'" class="del">X</span></div>')
+				$("#addFile").append('<div id="'+d1+'"><input type="file" class="form-control" id="" name="f'+d1+'"><span title="'+d1+'" class="del">X</span></div>')
 				/* $("#addFile").append('<input type="file" class="form-control" id="" name="f1"><span class="del">X</span>')*/
 				count++;
 				d1++;
@@ -63,7 +63,7 @@
 			</div>
 			<div class="form-group">
 				<label for="contents">Contents:</label>
-				<textarea class="form-control" rows="5" id="contents"></textarea>
+				<textarea class="form-control" rows="5" id="contents" name="contents"></textarea>
 			</div>
 			<div class="form-group" id="addFile">
 				<label for="file">file:</label> 
@@ -71,7 +71,7 @@
 			</div>
 			
 			<div class ="form-group">
-				<input type="button" value="Add" class="btn" onclick="f()" id="add">
+				<input type="button" value="Add" class="btn" id="add">
 			</div>
 			
 			<button class="btn btn-primary">Write</button>
